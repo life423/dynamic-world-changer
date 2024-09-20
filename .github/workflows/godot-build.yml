@@ -20,9 +20,9 @@ jobs:
       # Step 2: Download Godot Headless binary
       - name: Download Godot Headless
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_headless.64.zip
-          unzip Godot_v4.3-stable_linux_headless.64.zip -d godot-headless
-          chmod +x godot-headless/Godot_v4.3-stable_linux_headless.64
+          wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_server.64.zip
+          unzip Godot_v4.3-stable_linux_server.64.zip -d godot-headless
+          chmod +x godot-headless/Godot_v4.3-stable_linux_server.64
 
       # Step 3: Download Export Templates
       - name: Download export templates
@@ -33,11 +33,11 @@ jobs:
 
       # Step 4: Build the project
       - name: Export project
-        run: ./godot-headless/Godot_v4.3-stable_linux_headless.64 --headless --path . --export-debug "Linux" ./build/MyGame.x86_64
+        run: ./godot-headless/Godot_v4.3-stable_linux_server.64 --headless --path . --export-debug "Linux" ./build/MyGame.x86_64
 
-      # Step 5: Upload the exported build as an artifact (updated to v3)
+      # Step 5: Upload the exported build as an artifact (v3)
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3  # Update to version 3
+        uses: actions/upload-artifact@v3
         with:
           name: linux-build
           path: ./build/MyGame.x86_64
