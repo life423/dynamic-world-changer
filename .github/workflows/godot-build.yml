@@ -35,9 +35,9 @@ jobs:
       - name: Export project
         run: ./godot-headless/Godot_v4.3-stable_linux_headless.64 --headless --path . --export-debug "Linux" ./build/MyGame.x86_64
 
-      # Step 5: Upload the exported build as an artifact
+      # Step 5: Upload the exported build as an artifact (updated to v3)
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Update to version 3
         with:
           name: linux-build
           path: ./build/MyGame.x86_64
