@@ -1,22 +1,16 @@
 {
-  // Defines the version of the tasks schema. Version 2.0 is the latest.
   "version": "2.0.0",
-
-  // Array of tasks that VSCode can execute
   "tasks": [
     {
-        "label": "Run Godot",
-        "type": "shell",
-        "command": "/Applications/Godot.app/Contents/MacOS/Godot",
-        "args": [
-            "--path",
-            "."
-        ],
-        "group": {
-            "kind": "build",
-            "isDefault": true
-        },
-        "problemMatcher": []
+      "label": "Run Godot",
+      "type": "shell",
+      "command": "/Applications/Godot.app/Contents/MacOS/Godot",
+      "args": ["--path", "."],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
     }
-]
+  ]
 }

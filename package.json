@@ -1,0 +1,17 @@
+{
+  "name": "dynamic-world-changer",
+  "version": "1.0.0",
+  "description": "A gravity-flipping, dimension-hopping puzzle platformer.",
+  "main": "index.js",
+  "scripts": {
+    "format": "rome format .",
+    "lint": "rome check .",
+    "build": "godot --path . --export-debug \"Linux/X11\" ./build/MyGame.x86_64",
+    "start": "godot --path ."
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "rome": "^12.1.3"
+  }
+}
