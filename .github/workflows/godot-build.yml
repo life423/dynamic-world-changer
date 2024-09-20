@@ -1,0 +1,29 @@
+name: Godot Build & Export  # The name of the workflow that will appear in GitHub Actions.
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on any push to the 'main' branch.
+  pull_request:
+    branches:
+      - main  # Also trigger the workflow when a pull request is made to the 'main' branch.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The job runs on the latest Ubuntu environment.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Step to clone the repository into the workflow.
+
+      - name: Set up Godot Headless
+        run: sudo apt-get update && sudo apt-get install -y godot-headless  # Install Godot in headless mode (without a GUI).
+
+      - name: Build Project
+        run: godot --path . --headless --export-debug "Linux/X11" ./build/MyGame.x86_64  # Run Godot in headless mode and export the game as a Linux build.
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2  # Action to upload the built artifact (the exported game).
+        with:
+          name: linux-build  # Name the artifact that will appear in the GitHub Actions UI.
+          path: ./build/MyGame.x86_64  # The path to the artifact (the exported Linux build).
