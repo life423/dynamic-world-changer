@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Download Godot Headless binary
+      # Step 2: Download Godot Headless binary (fixed link)
       - name: Download Godot Headless
         run: |
           wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_server.64.zip
@@ -35,7 +35,7 @@ jobs:
       - name: Export project
         run: ./godot-headless/Godot_v4.3-stable_linux_server.64 --headless --path . --export-debug "Linux" ./build/MyGame.x86_64
 
-      # Step 5: Upload the exported build as an artifact (v3)
+      # Step 5: Upload the exported build as an artifact (updated to v3)
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
