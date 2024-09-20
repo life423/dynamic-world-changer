@@ -1,29 +1,50 @@
-name: Godot Build & Export  # The name of the workflow that will appear in GitHub Actions.
+name: Godot Build & Export
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on any push to the 'main' branch.
+      - main  # Trigger on pushes to the main branch.
   pull_request:
     branches:
-      - main  # Also trigger the workflow when a pull request is made to the 'main' branch.
+      - main  # Also trigger on pull requests to the main branch.
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # The job runs on the latest Ubuntu environment.
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment.
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Step to clone the repository into the workflow.
+        uses: actions/checkout@v2  # Clone the repository into the runner.
+
+      - name: Cache Godot Editor Files
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/godot  # Cache Godot files for faster builds.
+          key: ${{ runner.os }}-godot-cache  # Use OS as part of the cache key.
 
       - name: Set up Godot Headless
-        run: sudo apt-get update && sudo apt-get install -y godot-headless  # Install Godot in headless mode (without a GUI).
+        run: sudo apt-get update && sudo apt-get install -y godot-headless  # Install the headless version of Godot.
 
-      - name: Build Project
-        run: godot --path . --headless --export-debug "Linux/X11" ./build/MyGame.x86_64  # Run Godot in headless mode and export the game as a Linux build.
+      - name: Run Unit Tests
+        run: godot --path . --headless --run-tests  # Execute tests in headless mode before building.
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2  # Action to upload the built artifact (the exported game).
+      - name: Build Linux Project
+        run: godot --path . --headless --export-debug "Linux/X11" ./build/MyGame.x86_64  # Export Linux build.
+
+      - name: Build Windows Project
+        run: godot --path . --headless --export-debug "Windows Desktop" ./build/MyGame.exe  # Export Windows build.
+
+      - name: Build HTML5 Project
+        run: godot --path . --headless --export-debug "HTML5" ./build/MyGame.html  # Export HTML5 build.
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          name: linux-build  # Name the artifact that will appear in the GitHub Actions UI.
-          path: ./build/MyGame.x86_64  # The path to the artifact (the exported Linux build).
+          name: game-builds  # Name for the uploaded artifacts.
+          path: |  # Specify paths to the exported builds.
+            ./build/MyGame.x86_64
+            ./build/MyGame.exe
+            ./build/MyGame.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # Deploy the

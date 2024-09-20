@@ -13,6 +13,30 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
 # Ignore node_modules directory
 node_modules/
-rome.json
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.tmp
+
+# Logs
+*.log
+
+# Compiled files
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.pyc
+*.pyo
+*.pyd
+
+# Godot editor cache files
+*.godot_imported
