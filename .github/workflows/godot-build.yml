@@ -21,7 +21,7 @@ jobs:
       - name: Set up Godot Headless with Docker
         run: |
           docker pull barichello/godot-ci:4.3
-          docker run --rm -v $PWD:/godot barichello/godot-ci:4.3 /godot/MyGame.x86_64 --export-debug "Linux/X11"
+          docker run --rm -v $PWD:/godot barichello/godot-ci:4.3 /godot --headless --path /godot --export-debug "Linux" /godot/build/MyGame.x86_64
 
       # Step 3: Upload the exported build as an artifact (updated to v3)
       - name: Upload build artifact
