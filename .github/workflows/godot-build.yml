@@ -3,36 +3,34 @@ name: Godot Build & Export
 on:
   push:
     branches:
-      - main  # Trigger on push to main
+      - main  # Trigger on pushes to the 'main' branch
   pull_request:
     branches:
-      - main  # Trigger on PR to main
+      - main  # Trigger on PRs to the 'main' branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    runs-on: ubuntu-latest  # Use the latest Ubuntu image for the runner
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v2  # Check out the repo to the runner
+        uses: actions/checkout@v2
 
-      - name: Set up Godot Headless
+      # Step 2: Set up Godot Headless
+      - name: Install Godot Headless
         run: |
           sudo add-apt-repository ppa:godotengine/ppa -y
           sudo apt-get update
-          sudo apt-get install -y godot3-headless  # Install Godot headless version
+          sudo apt-get install -y godot3-headless
 
-      - name: Download Export Templates
+      # Step 3: Download Export Templates
+      - name: Download export templates
         run: |
           wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates
           tar -xvf Godot_v4.3-stable_export_templates.tpz -C ~/.local/share/godot/export_templates
 
-      - name: Run Export
-        run: godot --headless --path . --export-debug "Linux" ./build/MyGame.x86_64  # Export for Linux
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3  # Upload the exported build as an artifact
-        with:
-          name: linux-build
-          path: ./build/MyGame.x86_64
+      # Step 4: Build the project
+      - name: Export project
+        run: godot --head
