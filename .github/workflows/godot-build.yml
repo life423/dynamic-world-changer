@@ -3,42 +3,36 @@ name: Godot Build & Export
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to main
   pull_request:
     branches:
-      - main
+      - main  # Trigger on PR to main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # No changes needed here.
-
-      - name: Cache Godot Editor Files
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/godot
-          key: ${{ runner.os }}-godot-cache
+        uses: actions/checkout@v2  # Check out the repo to the runner
 
       - name: Set up Godot Headless
-        run: sudo apt-get update && sudo apt-get install -y godot-headless
+        run: |
+          sudo add-apt-repository ppa:godotengine/ppa -y
+          sudo apt-get update
+          sudo apt-get install -y godot3-headless  # Install Godot headless version
 
-      - name: Build Linux Project
-        run: godot --path . --headless --export-debug "Linux/X11" ./build/MyGame.x86_64
+      - name: Download Export Templates
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates
+          tar -xvf Godot_v4.3-stable_export_templates.tpz -C ~/.local/share/godot/export_templates
 
-      - name: Build Windows Project
-        run: godot --path . --headless --export-debug "Windows Desktop" ./build/MyGame.exe
+      - name: Run Export
+        run: godot --headless --path . --export-debug "Linux" ./build/MyGame.x86_64  # Export for Linux
 
-      - name: Build HTML5 Project
-        run: godot --path . --headless --export-debug "HTML5" ./build/MyGame.html
-
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3  # Updated to v3
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3  # Upload the exported build as an artifact
         with:
-          name: game-builds
-          path: |
-            ./build/MyGame.x86_64
-            ./build/MyGame.exe
-            ./
+          name: linux-build
+          path: ./build/MyGame.x86_64
