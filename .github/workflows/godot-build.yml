@@ -1,3 +1,14 @@
+name: Godot Build & Export
+
+# Trigger the workflow on push to the main branch or pull request to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
