@@ -1,4 +1,4 @@
-name: Build Godot Project
+name: Simple Godot Build
 
 on:
   push:
@@ -14,17 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Download Godot Standard
-        run: wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux.x86_64.zip
+      - name: Download Godot Headless (Standard)
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_server.64.zip
+          unzip Godot_v4.3-stable_linux_server.64.zip -d godot
 
-      - name: Extract Godot
-        run: unzip Godot_v4.3-stable_linux.x86_64.zip
-
-      - name: Run Godot in Headless Mode
-        run: ./Godot_v4.3-stable_linux.x86_64/godot --headless --export-debug "Linux" /path/to/output/file
+      - name: Export Project with Godot
+        run: |
+          ./godot/godot_server.64 --headless --path /workspace/ --export-debug "Linux" MyGame.x86_64
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to v3
         with:
           name: exported-project
-          path: /path/to/output/file
+          path: MyGame.x86_64
