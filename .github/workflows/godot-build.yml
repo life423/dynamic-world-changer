@@ -1,31 +1,30 @@
-name: Godot Build
+name: Build Godot Project
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Use Docker container with Godot pre-installed
-      - name: Run Godot Headless in Docker
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace barichello/godot-ci:4.3 \
-          /usr/local/bin/godot --headless --path /workspace --export-debug "Linux/X11" /workspace/build/MyGame.x86_64
+      - name: Download Godot Standard
+        run: wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux.x86_64.zip
 
-      # Upload build artifact
+      - name: Extract Godot
+        run: unzip Godot_v4.3-stable_linux.x86_64.zip
+
+      - name: Run Godot in Headless Mode
+        run: ./Godot_v4.3-stable_linux.x86_64/godot --headless --export-debug "Linux" /path/to/output/file
+
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: MyGame.x86_64
-          path: build/MyGame.x86_64
+          name: exported-project
+          path: /path/to/output/file
