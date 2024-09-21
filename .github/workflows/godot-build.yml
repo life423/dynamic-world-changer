@@ -28,7 +28,7 @@ jobs:
       run: |
         ./godot/Godot_v4.3-stable_linux.x86_64 --headless \
         --path ${{ github.workspace }} \
-        --export-debug "Linux/X11" ${{ github.workspace }}/MyGame.x86_64  # Adjust preset and path
+        --export-debug "Linux" ${{ github.workspace }}/MyGame.x86_64  # Adjust preset and path
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
