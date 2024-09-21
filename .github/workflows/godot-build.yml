@@ -15,13 +15,13 @@ jobs:
 
     - name: Download Godot
       run: |
-        wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_server.64.zip
-        unzip Godot_v4.3-stable_linux_server.64.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_linux_server.64
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+        unzip Godot_v4.3-stable_linux.x86_64.zip -d godot
+        chmod +x godot/Godot_v4.3-stable_linux.x86_64
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_linux_server.64 --headless --path /home/runner/work/dynamic-world-changer/dynamic-world-changer --export-debug "Linux/X11" /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
+        ./godot/Godot_v4.3-stable_linux.x86_64 --headless --path /home/runner/work/dynamic-world-changer/dynamic-world-changer --export-debug "Linux/X11" /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
