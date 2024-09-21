@@ -7,23 +7,29 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest  # Use macOS runner instead of Ubuntu
+    runs-on: macos-latest 
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    - name: Download Godot for macOS
+    - name: Cache Godot
+      id: cache-godot
+      uses: actions/cache@v3
+      with:
+        path: godot/Godot.app 
+        key: godot-4.3-macos
+
+    - name: Download Godot (if not cached)
+      if: steps.cache-godot.outputs.cache-hit != 'true'
       run: |
         wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_macos.universal.zip
         unzip Godot_v4.3-stable_macos.universal.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_macos.universal
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_macos.universal --headless \
-        --path ${{ github.workspace }} \
-        --export-debug "Mac OSX" ${{ github.workspace }}/MyGame.app
+        ./godot/Godot.app/Contents/MacOS/Godot --headless \
+          --path ${{ github.workspace }} \
+          --export-debug "Mac OSX" ${{ github.workspace }}/MyGame.app
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
