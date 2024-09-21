@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Install Godot Headless
+      # Download and install Godot Headless
       - name: Download Godot Headless
         run: |
           wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_headless.64.zip
