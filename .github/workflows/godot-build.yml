@@ -1,6 +1,5 @@
 name: Godot Build & Export
 
-# Trigger the workflow on push to the main branch or pull request to the main branch
 on:
   push:
     branches:
@@ -20,7 +19,7 @@ jobs:
       - name: Set up Godot Headless with Docker
         run: |
           docker pull barichello/godot-ci:4.3
-          docker run --rm -v $PWD:/godot --user $(id -u):$(id -g) barichello/godot-ci:4.3 /godot --headless --path /godot --export-debug "Linux" /godot/build/MyGame.x86_64
+          docker run --rm -v $PWD:/godot --user $(id -u):$(id -g) -w /godot barichello/godot-ci:4.3 /godot --headless --path /godot --export-debug "Linux" /godot/build/MyGame.x86_64
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
