@@ -29,7 +29,7 @@ jobs:
       run: |
         ./godot/Godot.app/Contents/MacOS/Godot --headless \
           --path ${{ github.workspace }} \
-          --export-debug "Mac OSX" ${{ github.workspace }}/MyGame.app
+          --export-debug "MacOS" ${{ github.workspace }}/MyGame.app
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
