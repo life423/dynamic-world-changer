@@ -1,4 +1,4 @@
-name: Godot Export
+name: Godot Export for Windows
 
 on:
   push:
@@ -15,23 +15,18 @@ jobs:
 
     - name: Download Godot
       run: |
-        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
-        unzip Godot_v4.3-stable_linux.x86_64.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_linux.x86_64
-
-    - name: Prepare export directories
-      run: |
-        mkdir -p ${{ github.workspace }}/.godot/editor
-        chmod -R 777 ${{ github.workspace }}/.godot/editor  # Ensure write permissions
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_win64.exe.zip
+        unzip Godot_v4.3-stable_win64.exe.zip -d godot
+        chmod +x godot/Godot_v4.3-stable_win64.exe
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_linux.x86_64 --headless \
+        ./godot/Godot_v4.3-stable_win64.exe --headless \
         --path ${{ github.workspace }} \
-        --export-debug "Linux" ${{ github.workspace }}/MyGame.x86_64  # Adjust preset and path
+        --export-debug "Windows Desktop" ${{ github.workspace }}/MyGame.exe
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
         name: MyGame
-        path: ${{ github.workspace }}/MyGame.x86_64
+        path: ${{ github.workspace }}/MyGame.exe
