@@ -16,13 +16,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Godot Headless with Docker
-        run: |
-          docker pull barichello/godot-ci:4.3
-          docker run --rm -v $PWD:/godot --user $(id -u):$(id -g) -w /godot barichello/godot-ci:4.3 /godot --headless --path /godot --export-debug "Linux" /godot/build/MyGame.x86_64
+      - name: Set up Godot Docker image
+        run: docker pull barichello/godot-ci:4.3
 
-      - name: Upload build artifact
+      - name: Build Project with Docker
+        run: |
+          docker run --rm \
+            --workdir /godot/project \
+            --volume $(pwd):/godot/project \
+            barichello/godot-ci:4.3 \
+            /usr/local/bin/godot --headless --path /godot/project --export-debug "Linux/X11" /godot/project/MyGame.x86_64
+
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: linux-build
-          path: ./build/MyGame.x86_64
+          path: ./MyGame.x86_64
