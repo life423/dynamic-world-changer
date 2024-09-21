@@ -13,26 +13,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Download Godot Headless
+    - name: Download Godot
       run: |
-        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux_server.64.zip
-        unzip Godot_v4.3-stable_linux_server.64.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_linux_server.64
-
-    - name: Prepare export directories
-      run: |
-        mkdir -p .godot/editor
-        chmod -R 777 .godot/editor
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+        unzip Godot_v4.3-stable_linux.x86_64.zip -d godot
+        chmod +x godot/Godot_v4.3-stable_linux.x86_64
 
     - name: Export Project with Godot
       run: |
-        chmod -R +w ${{ github.workspace }}  # Grant write permissions
-        ./godot/Godot_v4.3-stable_linux_server.64 --headless \
-        --path ${{ github.workspace }} \
-        --export-debug "Linux_X11_Debug" DynamicWorldChanger.x86_64  # Export with preset and game name
+        ./godot/Godot_v4.3-stable_linux.x86_64 --headless --path /home/runner/work/dynamic-world-changer/dynamic-world-changer --export-debug "Linux/X11" /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: DynamicWorldChanger
-        path: ${{ github.workspace }}/DynamicWorldChanger.x86_64
+        name: MyGame
+        path: /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
