@@ -10,17 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-    - name: Cache Godot
-      id: cache-godot
-      uses: actions/cache@v3
-      with:
-        path: godot/Godot_v4.3-stable_linux_server.64
-        key: godot-4.3-linux-server
-
-    - name: Download Godot (if not cached)
-      if: steps.cache-godot.outputs.cache-hit != 'true'
+    - name: Download Godot
       run: |
         wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_server.64.zip
         unzip Godot_v4.3-stable_linux_server.64.zip -d godot
@@ -28,12 +21,10 @@ jobs:
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_linux_server.64 --headless \
-          --path ${{ github.workspace }} \  # Use workspace path
-          --export-debug "Linux/X11" MyGame.x86_64  # Assuming project is at root
+        ./godot/Godot_v4.3-stable_linux_server.64 --headless --path /home/runner/work/dynamic-world-changer/dynamic-world-changer --export-debug "Linux/X11" /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
         name: MyGame
-        path: MyGame.x86_64
+        path: /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
