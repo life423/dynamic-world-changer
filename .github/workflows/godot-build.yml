@@ -1,4 +1,4 @@
-name: Godot Export for Windows
+name: Godot Export for macOS
 
 on:
   push:
@@ -15,18 +15,18 @@ jobs:
 
     - name: Download Godot
       run: |
-        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_win64.exe.zip
-        unzip Godot_v4.3-stable_win64.exe.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_win64.exe
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_osx.universal.zip
+        unzip Godot_v4.3-stable_osx.universal.zip -d godot
+        chmod +x godot/Godot_v4.3-stable_osx.universal
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_win64.exe --headless \
+        ./godot/Godot_v4.3-stable_osx.universal --headless \
         --path ${{ github.workspace }} \
-        --export-debug "Windows Desktop" ${{ github.workspace }}/MyGame.exe
+        --export-debug "Mac OSX" ${{ github.workspace }}/MyGame.app
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
         name: MyGame
-        path: ${{ github.workspace }}/MyGame.exe
+        path: ${{ github.workspace }}/MyGame.app
