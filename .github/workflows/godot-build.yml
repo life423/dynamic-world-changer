@@ -25,11 +25,14 @@ jobs:
         wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_macos.universal.zip
         unzip Godot_v4.3-stable_macos.universal.zip -d godot
 
+    - name: Set write permissions
+      run: chmod -R 777 ${{ github.workspace }}  # Grant write permissions to avoid file permission issues
+
     - name: Export Project with Godot
       run: |
         ./godot/Godot.app/Contents/MacOS/Godot --headless \
           --path ${{ github.workspace }} \
-          --export-debug "macOS" ${{ github.workspace }}/MyGame.app  # Corrected preset name
+          --export-debug "macOS" ${{ github.workspace }}/MyGame.app
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
