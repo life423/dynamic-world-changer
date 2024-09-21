@@ -1,4 +1,4 @@
-name: Godot Build & Export
+name: Godot Build
 
 on:
   push:
@@ -13,33 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Check out the repository
+      # Checkout the code
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Set up Docker
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # Install Godot Headless
+      - name: Download Godot Headless
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux_headless.64.zip
+          unzip Godot_v4.3-stable_linux_headless.64.zip -d /usr/local/bin/
+          chmod +x /usr/local/bin/Godot_v4.3-stable_linux_headless.64
 
-      # Pull the Godot CI Docker image and specify the platform for ARM64 Macs
-      - name: Pull Godot CI Docker image
-        run: docker pull --platform linux/amd64 barichello/godot-ci:4.3
-
-      # Run Godot Headless inside the container to export the project
+      # Export project using Godot headless
       - name: Export Project with Godot
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/godot/project \
-            -w /godot/project \
-            --platform linux/amd64 \
-            barichello/godot-ci:4.3 \
-            /usr/local/bin/godot --path /godot/project --export-debug "Linux/X11" ./build/MyGame.x86_64
+          /usr/local/bin/Godot_v4.3-stable_linux_headless.64 --headless --path /github/workspace --export-debug "Linux/X11" /github/workspace/build/MyGame.x86_64
 
-      # Upload the built game as an artifact
-      - name: Upload Build Artifact
+      # Upload build artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: linux-build
-          path: ./build/MyGame.x86_64
-
-          
+          name: MyGame.x86_64
+          path: /github/workspace/build/MyGame.x86_64
