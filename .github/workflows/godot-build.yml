@@ -19,12 +19,19 @@ jobs:
         unzip Godot_v4.3-stable_linux.x86_64.zip -d godot
         chmod +x godot/Godot_v4.3-stable_linux.x86_64
 
+    - name: Prepare export directories
+      run: |
+        mkdir -p ${{ github.workspace }}/.godot/editor
+        chmod -R 777 ${{ github.workspace }}/.godot/editor  # Ensure write permissions
+
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_linux.x86_64 --headless --path /home/runner/work/dynamic-world-changer/dynamic-world-changer --export-debug "Linux/X11" /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
+        ./godot/Godot_v4.3-stable_linux.x86_64 --headless \
+        --path ${{ github.workspace }} \
+        --export-debug "Linux/X11" ${{ github.workspace }}/MyGame.x86_64  # Adjust preset and path
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
         name: MyGame
-        path: /home/runner/work/dynamic-world-changer/dynamic-world-changer/MyGame.x86_64
+        path: ${{ github.workspace }}/MyGame.x86_64
