@@ -7,21 +7,21 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest  # Use macOS runner instead of Ubuntu
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Download Godot
+    - name: Download Godot for macOS
       run: |
-        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_osx.universal.zip
-        unzip Godot_v4.3-stable_osx.universal.zip -d godot
-        chmod +x godot/Godot_v4.3-stable_osx.universal
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_macos.universal.zip
+        unzip Godot_v4.3-stable_macos.universal.zip -d godot
+        chmod +x godot/Godot_v4.3-stable_macos.universal
 
     - name: Export Project with Godot
       run: |
-        ./godot/Godot_v4.3-stable_osx.universal --headless \
+        ./godot/Godot_v4.3-stable_macos.universal --headless \
         --path ${{ github.workspace }} \
         --export-debug "Mac OSX" ${{ github.workspace }}/MyGame.app
 
